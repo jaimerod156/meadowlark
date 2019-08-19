@@ -1,16 +1,9 @@
 'use strict'
 var express = require('express'),
+	fortune = require('./lib/fortune'),
 	app = express(),
 	exphbs = require('express-handlebars')
 		.create( {defaultLayout: 'main'});
-
-var fortunes = [
-	"Conquer your fears or they will conquer you.",
-	"Rivers need springs.",
-	"Do not fear what you don't know.",
-	"You will hava a pleasant surprise.",
-	"Whenever possible, keep it simple.",
-];
 		
 app
 	.engine('handlebars', exphbs.engine)
@@ -24,9 +17,9 @@ app
 	.get('/', (req,res) => {
 		res.render('home');
 	})
+	
 	.get('/about', (req, res) => {
-		var randomFortune = fortunes[Math.floor(Math.random()* fortunes.length)];
-		res.render('about', {fortune: randomFortune} );
+		res.render('about', { fortune: fortune.getFortune()} );
 	})
 
 	// custom 404 page
