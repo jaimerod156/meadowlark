@@ -14,12 +14,26 @@ app
 
 	.use(express.static(`${__dirname}/public`))
 
+	.use( (req, res, next) => {
+		res.locals.showTests = app.get('env') !== 'production' && req.query.test === '1';
+		next();
+	})
+
 	.get('/', (req,res) => {
 		res.render('home');
 	})
 	
 	.get('/about', (req, res) => {
-		res.render('about', { fortune: fortune.getFortune()} );
+		res.render('about', {
+			 fortune: fortune.getFortune(),
+			 pageTestScript: '/qa/tests-about.js'
+			} );
+	})
+	.get('/tours/hood-river', (req, res) => {
+		res.render('tours/hood-river');
+	})
+	.get('/tours/request-group-rate', (req, res) => {
+		res.render('tours/request-group-rate');
 	})
 
 	// custom 404 page
